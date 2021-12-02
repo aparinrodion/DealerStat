@@ -1,10 +1,12 @@
 package org.leverx.dealerstat.mappers;
 
+import lombok.NoArgsConstructor;
 import org.leverx.dealerstat.dto.UserDto;
 import org.leverx.dealerstat.models.User;
 import org.springframework.stereotype.Component;
 
 @Component
+@NoArgsConstructor
 public class UserMapper {
     public User mapToUser(UserDto userDto) {
         User user = new User();

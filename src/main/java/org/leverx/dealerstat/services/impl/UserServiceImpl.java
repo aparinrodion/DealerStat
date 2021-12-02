@@ -1,8 +1,12 @@
 package org.leverx.dealerstat.services.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.leverx.dealerstat.dto.UserDto;
+import org.leverx.dealerstat.mailsender.MailSender;
+import org.leverx.dealerstat.mappers.UserMapper;
 import org.leverx.dealerstat.models.User;
 import org.leverx.dealerstat.repositories.UserRepository;
+import org.leverx.dealerstat.services.MailSenderService;
 import org.leverx.dealerstat.services.UserService;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +17,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final MailSenderService mailSenderService;
+    private final UserMapper userMapper;
 
     @Override
     public List<User> getAll() {
@@ -22,8 +28,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void save(User user) {
-        userRepository.save(user);
+    public User get(Integer id) {
+        return userRepository.findById(id).orElseThrow(() -> new RuntimeException());
+    }
+
+    @Override
+    public void save(UserDto userDto) {
+        userRepository.save(userMapper.mapToUser(userDto));
     }
 
 

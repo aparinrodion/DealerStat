@@ -15,5 +15,5 @@ import java.util.List;
 @RequiredArgsConstructor
 @ComponentScan("org.leverx.dealerstat")
 public class Controller {
-    
+
 }
