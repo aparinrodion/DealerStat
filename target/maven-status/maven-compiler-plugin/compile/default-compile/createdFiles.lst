@@ -1,0 +1,9 @@
+org\leverx\dealerstat\repositories\UserRepository.class
+org\leverx\dealerstat\models\User.class
+org\leverx\dealerstat\services\impl\UserServiceImpl.class
+org\leverx\dealerstat\controllers\Controller.class
+org\leverx\dealerstat\config\DataSourceConfig.class
+org\leverx\dealerstat\models\Role.class
+org\leverx\dealerstat\config\ServletDispatcher.class
+org\leverx\dealerstat\config\SpringConfig.class
+org\leverx\dealerstat\services\UserService.class
