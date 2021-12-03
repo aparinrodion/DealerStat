@@ -2,11 +2,10 @@ package org.leverx.dealerstat.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.leverx.dealerstat.dto.UserDto;
-import org.leverx.dealerstat.mailsender.MailSender;
+import org.leverx.dealerstat.exceptions.EntityNotFoundException;
 import org.leverx.dealerstat.mappers.UserMapper;
 import org.leverx.dealerstat.models.User;
 import org.leverx.dealerstat.repositories.UserRepository;
-import org.leverx.dealerstat.services.MailSenderService;
 import org.leverx.dealerstat.services.UserService;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +16,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-    private final MailSenderService mailSenderService;
     private final UserMapper userMapper;
 
     @Override
@@ -28,13 +26,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User get(Integer id) {
-        return userRepository.findById(id).orElseThrow(() -> new RuntimeException());
+    public UserDto get(Integer id) {
+        return userMapper.mapToDto(userRepository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException(String.valueOf(User.class), id)));
     }
 
     @Override
-    public void save(UserDto userDto) {
-        userRepository.save(userMapper.mapToUser(userDto));
+    public UserDto save(UserDto userDto) {
+        User user = userMapper.mapToUser(userDto);
+        user = userRepository.save(user);
+        return userMapper.mapToDto(user);
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    @Override
+    public void setConfirmedById(Integer id, boolean isActivated) {
+        UserDto userDto = get(id);
+        userDto.setConfirmed(true);
+        save(userDto);
     }
 
 

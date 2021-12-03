@@ -10,9 +10,12 @@ import java.util.List;
 public interface UserService {
     List<User> getAll();
 
-    User get(Integer id);
+    UserDto get(Integer id);
 
-    void save(UserDto userDto);
+    UserDto save(UserDto userDto);
 
+    boolean existsByEmail(String email);
+
+    void setConfirmedById(Integer id, boolean isActivated);
 
 }

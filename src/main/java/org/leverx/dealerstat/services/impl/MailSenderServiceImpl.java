@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class MailSenderServiceImpl implements MailSenderService {
     private final MailSender mailSender;
-    private final String CONFIRMATION_LINK_PATTERN = "http://localhost:8080/students/auth/%s";
+    private final String CONFIRMATION_LINK_PATTERN = "http://localhost:8080/auth/confirm/%s";
 
     @Override
     public void sendMessage(UserDto userDto, String subject, String text) {

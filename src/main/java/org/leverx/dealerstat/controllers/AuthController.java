@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.leverx.dealerstat.dto.UserDto;
 import org.leverx.dealerstat.mappers.UserMapper;
 import org.leverx.dealerstat.models.User;
+import org.leverx.dealerstat.services.RegistrationService;
 import org.leverx.dealerstat.services.UserService;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +15,7 @@ import java.util.List;
 @RestController
 public class AuthController {
     private final UserService userService;
-    private final UserMapper userMapper;
+    private final RegistrationService registrationService;
 
     @GetMapping
     public List<User> register() {
@@ -23,12 +24,18 @@ public class AuthController {
 
     @GetMapping("/{id}")
     public UserDto get(@PathVariable Integer id) {
-        return userMapper.mapToDto(userService.get(id));
+        return userService.get(id);
     }
+
 
     @PostMapping
     public void register(@RequestBody UserDto userDto) {
+        registrationService.register(userDto);
+    }
 
+    @PostMapping("/confirm/{hash_code}")
+    public void confirm(@PathVariable Integer hash_code) {
+        registrationService.confirm(hash_code);
     }
 
 }
