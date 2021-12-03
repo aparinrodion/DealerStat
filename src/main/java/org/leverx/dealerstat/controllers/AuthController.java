@@ -38,4 +38,9 @@ public class AuthController {
         registrationService.confirm(hash_code);
     }
 
+    @PostMapping("/forgot_password")
+    public void forgotPassword(@RequestBody String email) {
+
+    }
+
 }

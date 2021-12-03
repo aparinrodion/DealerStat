@@ -23,9 +23,12 @@ public class RegistrationServiceImpl implements RegistrationService {
     private final UserService userService;
     private final UserMapper userMapper;
     private final MailSenderService mailSenderService;
-    private static final String CONFIRMATION_SUBJECT = " DealerStat account confirmation";
     private static final Integer TIME = 24;
     private static final TimeUnit TIME_UNIT = TimeUnit.HOURS;
+    private static final String CONFIRMATION_SUBJECT = " DealerStat account confirmation";
+    private static final String CONFIRMATION_LINK_PATTERN = "http://localhost:8080/auth/confirm/%d";
+    private static final String CONFIRMATION_TEXT_PATTERN = "Hello, %s! Follow link to confirm account\n";
+
 
     @Override
     public void register(UserDto userDto) {
@@ -43,7 +46,9 @@ public class RegistrationServiceImpl implements RegistrationService {
     }
 
     private void sendConfirmMessage(UserDto userDto, Integer hashCode) {
-        mailSenderService.sendMessage(userDto, CONFIRMATION_SUBJECT, String.valueOf(hashCode));
+        String message = String.format(CONFIRMATION_TEXT_PATTERN +
+                CONFIRMATION_LINK_PATTERN, userDto.getFirst_name(), hashCode);
+        mailSenderService.sendMessage(userDto, CONFIRMATION_SUBJECT, message);
     }
 
     private User createUserIfNotExist(UserDto userDto) {
