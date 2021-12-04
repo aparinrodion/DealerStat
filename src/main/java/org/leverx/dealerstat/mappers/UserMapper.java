@@ -18,6 +18,7 @@ public class UserMapper {
         user.setCreated_at(userDto.getCreated_at());
         user.setConfirmed(userDto.isConfirmed());
         user.setRoles(userDto.getRoles());
+        user.setComments(userDto.getComments());
         return user;
     }
 
@@ -31,6 +32,7 @@ public class UserMapper {
         userDto.setCreated_at(user.getCreated_at());
         userDto.setConfirmed(user.isConfirmed());
         userDto.setRoles(user.getRoles());
+        userDto.setComments(user.getComments());
         return userDto;
 
     }

@@ -8,6 +8,7 @@ import org.springframework.data.annotation.CreatedDate;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Set;
 
 @Data
 @Entity
@@ -33,10 +34,17 @@ public class User {
     @Column(name = "confirmed")
     private boolean confirmed = false;
 
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Collection<Role> roles;
+    private Set<Role> roles;
+    //private Collection<Role> roles;
+
+    @OneToMany(mappedBy = "trader_id", fetch = FetchType.EAGER)
+    private Set<Comment> comments;
+    //private Collection<Comment> comments;
+
 
 }

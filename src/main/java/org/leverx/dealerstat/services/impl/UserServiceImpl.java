@@ -9,12 +9,14 @@ import org.leverx.dealerstat.models.User;
 import org.leverx.dealerstat.repositories.UserRepository;
 import org.leverx.dealerstat.services.UserService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
