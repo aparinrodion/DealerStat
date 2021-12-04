@@ -59,6 +59,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean isEmailConfirmedByEmail(String email) {
+        return getByEmail(email).isConfirmed();
+    }
+
+    @Override
     public UserDto getByEmail(String email) {
         if (!existsByEmail(email)) {
             throw new UserWithEmailNotFoundException(email);
