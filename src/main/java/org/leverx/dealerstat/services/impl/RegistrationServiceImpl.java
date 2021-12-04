@@ -10,6 +10,7 @@ import org.leverx.dealerstat.redis.RedisService;
 import org.leverx.dealerstat.services.MailSenderService;
 import org.leverx.dealerstat.services.RegistrationService;
 import org.leverx.dealerstat.services.UserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -23,6 +24,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     private final UserService userService;
     private final UserMapper userMapper;
     private final MailSenderService mailSenderService;
+    private final PasswordEncoder passwordEncoder;
     private static final Integer TIME = 24;
     private static final TimeUnit TIME_UNIT = TimeUnit.HOURS;
     private static final String CONFIRMATION_SUBJECT = " DealerStat account confirmation";
@@ -51,14 +53,17 @@ public class RegistrationServiceImpl implements RegistrationService {
         mailSenderService.sendMessage(userDto, CONFIRMATION_SUBJECT, message);
     }
 
+    private String encodePassword(String password) {
+        return passwordEncoder.encode(password);
+    }
+
     private User createUserIfNotExist(UserDto userDto) {
         if (userService.existsByEmail(userDto.getEmail())) {
             throw new UserAlreadyExistsException(userDto.getEmail());
         } else {
             User user = userMapper.mapToUser(userDto);
             user.setCreated_at(new Date());
-            //TODO password encoder
-            user.setPassword(userDto.getPassword());
+            user.setPassword(encodePassword(userDto.getPassword()));
             user.setRoles(Collections.singleton(Role.TRADER));
             return user;
         }

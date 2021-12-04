@@ -9,6 +9,7 @@ import org.leverx.dealerstat.redis.RedisService;
 import org.leverx.dealerstat.services.MailSenderService;
 import org.leverx.dealerstat.services.NewPasswordService;
 import org.leverx.dealerstat.services.UserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.TimeUnit;
@@ -19,6 +20,7 @@ public class NewPasswordServiceImpl implements NewPasswordService {
     private final MailSenderService mailSenderService;
     private final UserService userService;
     private final RedisService redisService;
+    private final PasswordEncoder passwordEncoder;
     private static final Integer TIME = 24;
     private static final TimeUnit TIME_UNIT = TimeUnit.HOURS;
     private final static String RESETTING_PASSWORD_SUBJECT = "Resetting password";
@@ -37,8 +39,12 @@ public class NewPasswordServiceImpl implements NewPasswordService {
     public void resetPassword(NewPasswordDto newPasswordDto) {
         Integer id = getIdIfCodeExists(newPasswordDto.getCode());
         //TODO encode password
-        userService.setPasswordById(id, newPasswordDto.getPassword());
+        userService.setPasswordById(id, encodePassword(newPasswordDto.getPassword()));
         redisService.delete(newPasswordDto.getCode());
+    }
+
+    private String encodePassword(String password) {
+        return passwordEncoder.encode(password);
     }
 
     private void sendCodeMessage(UserDto userDto, String subject, Integer code) {

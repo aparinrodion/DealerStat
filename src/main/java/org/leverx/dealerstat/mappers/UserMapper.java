@@ -17,6 +17,7 @@ public class UserMapper {
         user.setEmail(userDto.getEmail());
         user.setCreated_at(userDto.getCreated_at());
         user.setConfirmed(userDto.isConfirmed());
+        user.setRoles(userDto.getRoles());
         return user;
     }
 
@@ -29,6 +30,7 @@ public class UserMapper {
         userDto.setEmail(user.getEmail());
         userDto.setCreated_at(user.getCreated_at());
         userDto.setConfirmed(user.isConfirmed());
+        userDto.setRoles(user.getRoles());
         return userDto;
 
     }
