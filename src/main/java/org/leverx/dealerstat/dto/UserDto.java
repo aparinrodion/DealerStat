@@ -2,6 +2,7 @@ package org.leverx.dealerstat.dto;
 
 import lombok.Data;
 import org.leverx.dealerstat.models.Comment;
+import org.leverx.dealerstat.models.GameObject;
 import org.leverx.dealerstat.models.Role;
 
 import java.util.Collection;
@@ -19,4 +20,5 @@ public class UserDto {
     private boolean confirmed = false;
     private Set<Role> roles;
     private Set<Comment> comments;
+    private Set<GameObject> gameObjects;
 }

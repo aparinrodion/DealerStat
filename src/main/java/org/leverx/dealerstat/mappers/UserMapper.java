@@ -19,6 +19,7 @@ public class UserMapper {
         user.setConfirmed(userDto.isConfirmed());
         user.setRoles(userDto.getRoles());
         user.setComments(userDto.getComments());
+        user.setGameObjects(userDto.getGameObjects());
         return user;
     }
 
@@ -33,6 +34,7 @@ public class UserMapper {
         userDto.setConfirmed(user.isConfirmed());
         userDto.setRoles(user.getRoles());
         userDto.setComments(user.getComments());
+        userDto.setGameObjects(user.getGameObjects());
         return userDto;
 
     }

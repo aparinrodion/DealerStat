@@ -46,5 +46,8 @@ public class User {
     private Set<Comment> comments;
     //private Collection<Comment> comments;
 
+    @OneToMany(mappedBy = "trader_id", fetch = FetchType.EAGER)
+    private Set<GameObject> gameObjects;
+
 
 }
