@@ -18,4 +18,8 @@ public interface UserService {
 
     void setConfirmedById(Integer id, boolean isActivated);
 
+    void setPasswordById(Integer id, String password);
+
+    UserDto getByEmail(String email);
+
 }

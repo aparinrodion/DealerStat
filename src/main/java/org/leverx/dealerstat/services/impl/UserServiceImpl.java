@@ -3,6 +3,7 @@ package org.leverx.dealerstat.services.impl;
 import lombok.RequiredArgsConstructor;
 import org.leverx.dealerstat.dto.UserDto;
 import org.leverx.dealerstat.exceptions.EntityNotFoundException;
+import org.leverx.dealerstat.exceptions.UserWithEmailNotFoundException;
 import org.leverx.dealerstat.mappers.UserMapper;
 import org.leverx.dealerstat.models.User;
 import org.leverx.dealerstat.repositories.UserRepository;
@@ -48,6 +49,21 @@ public class UserServiceImpl implements UserService {
         UserDto userDto = get(id);
         userDto.setConfirmed(true);
         save(userDto);
+    }
+
+    @Override
+    public void setPasswordById(Integer id, String password) {
+        UserDto userDto = get(id);
+        userDto.setPassword(password);
+        save(userDto);
+    }
+
+    @Override
+    public UserDto getByEmail(String email) {
+        if (!existsByEmail(email)) {
+            throw new UserWithEmailNotFoundException(email);
+        }
+        return userMapper.mapToDto(userRepository.findByEmail(email));
     }
 
 
