@@ -6,8 +6,9 @@ import org.leverx.dealerstat.models.Game;
 import java.util.List;
 
 public interface GameService {
-    void save(GameDto gameDto);
+    GameDto save(GameDto gameDto);
 
     List<Game> getAll();
 
+    GameDto getById(Integer id);
 }

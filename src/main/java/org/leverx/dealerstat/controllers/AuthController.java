@@ -1,9 +1,10 @@
 package org.leverx.dealerstat.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.leverx.dealerstat.dto.NewPasswordDto;
 import org.leverx.dealerstat.dto.UserDto;
-import org.leverx.dealerstat.mappers.UserMapper;
 import org.leverx.dealerstat.models.User;
+import org.leverx.dealerstat.services.NewPasswordService;
 import org.leverx.dealerstat.services.RegistrationService;
 import org.leverx.dealerstat.services.UserService;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.util.List;
 public class AuthController {
     private final UserService userService;
     private final RegistrationService registrationService;
+    private final NewPasswordService newPasswordService;
 
     @GetMapping
     public List<User> register() {
@@ -39,8 +41,13 @@ public class AuthController {
     }
 
     @PostMapping("/forgot_password")
-    public void forgotPassword(@RequestBody String email) {
+    public void forgotPassword(@RequestParam String email) {
+        newPasswordService.forgotPassword(email);
+    }
 
+    @PostMapping("/reset")
+    public void resetPassword(@RequestBody NewPasswordDto newPasswordDto) {
+        newPasswordService.resetPassword(newPasswordDto);
     }
 
 }

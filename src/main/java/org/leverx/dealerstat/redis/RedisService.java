@@ -14,5 +14,4 @@ public interface RedisService {
 
     void delete(Object key);
 
-
 }
