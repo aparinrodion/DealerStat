@@ -25,8 +25,8 @@ public class GamesController {
         gameService.save(gameDto);
     }
 
-    @PostMapping("/{id}")
-    public void addGame(@RequestBody GameDto gameDto, @RequestParam Integer id) {
+    @PutMapping("/{id}")
+    public void updateGame(@RequestBody GameDto gameDto, @RequestParam Integer id) {
         gameDto.setId(id);
         gameService.save(gameDto);
     }

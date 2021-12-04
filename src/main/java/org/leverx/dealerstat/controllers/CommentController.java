@@ -29,9 +29,11 @@ public class CommentController {
         return commentService.getById(id);
     }
 
-    /*@PutMapping("/comments/{id}")
-    public CommentDto getComment(@PathVariable Integer id) {
-        return commentService.getById(id);
-    }*/
+    @PutMapping("/comments/{id}")
+    public void updateComment(@PathVariable Integer id, @RequestParam CommentDto commentDto) {
+        commentDto.setId(id);
+        commentService.save(commentDto);
+    }
+
 
 }
