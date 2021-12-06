@@ -1,18 +1,23 @@
 package org.leverx.dealerstat.services.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.leverx.dealerstat.dto.GameObjectDto;
 import org.leverx.dealerstat.dto.UserDto;
 import org.leverx.dealerstat.exceptions.EntityNotFoundException;
 import org.leverx.dealerstat.exceptions.UserWithEmailNotFoundException;
 import org.leverx.dealerstat.mappers.UserMapper;
+import org.leverx.dealerstat.models.GameObject;
 import org.leverx.dealerstat.models.User;
 import org.leverx.dealerstat.repositories.UserRepository;
 import org.leverx.dealerstat.services.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -71,6 +76,17 @@ public class UserServiceImpl implements UserService {
             throw new UserWithEmailNotFoundException(email);
         }
         return userMapper.mapToDto(userRepository.findByEmail(email));
+    }
+
+    @Override
+    public List<GameObject> getPrincipalGameObjects(Principal principal) {
+        UserDto userDto = getByEmail(principal.getName());
+        return new ArrayList<>(userDto.getGameObjects());
+    }
+
+    @Override
+    public boolean existsById(Integer id) {
+        return userRepository.existsById(id);
     }
 
 

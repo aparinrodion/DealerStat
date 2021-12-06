@@ -1,6 +1,7 @@
 package org.leverx.dealerstat.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.aspectj.apache.bcel.classfile.Code;
 import org.leverx.dealerstat.dto.NewPasswordDto;
 import org.leverx.dealerstat.dto.UserDto;
 import org.leverx.dealerstat.models.User;
@@ -39,6 +40,13 @@ public class AuthController {
     public void confirm(@PathVariable Integer hash_code) {
         registrationService.confirm(hash_code);
     }
+
+
+    @GetMapping("/check_code")
+    public boolean checkCode(@RequestParam Integer code) {
+        return newPasswordService.checkCode(code);
+    }
+
 
     @PostMapping("/forgot_password")
     public void forgotPassword(@RequestParam String email) {

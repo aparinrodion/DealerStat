@@ -6,4 +6,6 @@ public interface NewPasswordService {
     void forgotPassword(String email);
 
     void resetPassword(NewPasswordDto newPasswordDto);
+
+    boolean checkCode(Object code);
 }

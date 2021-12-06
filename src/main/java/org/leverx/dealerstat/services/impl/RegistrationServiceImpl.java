@@ -62,7 +62,7 @@ public class RegistrationServiceImpl implements RegistrationService {
             throw new UserAlreadyExistsException(userDto.getEmail());
         } else {
             User user = userMapper.mapToUser(userDto);
-            user.setCreated_at(new Date());
+            //user.setCreated_at(new Date());
             user.setPassword(encodePassword(userDto.getPassword()));
             user.setRoles(Collections.singleton(Role.TRADER));
             return user;

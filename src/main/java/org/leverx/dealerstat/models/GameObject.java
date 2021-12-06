@@ -4,7 +4,10 @@ package org.leverx.dealerstat.models;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -14,6 +17,7 @@ import java.util.Date;
 @Table(name = "game_objects")
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class GameObject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,6 +38,7 @@ public class GameObject {
     @Column(name = "updated_at")
     @Temporal(TemporalType.DATE)
     @CreatedDate
+    @LastModifiedDate
     private Date updated_at;
     @Column(name = "game_id")
     private Integer game_id;

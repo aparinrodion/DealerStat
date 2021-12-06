@@ -1,9 +1,11 @@
 package org.leverx.dealerstat.services;
 
 import org.leverx.dealerstat.dto.UserDto;
+import org.leverx.dealerstat.models.GameObject;
 import org.leverx.dealerstat.models.User;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.List;
 
 @Service
@@ -24,4 +26,7 @@ public interface UserService {
 
     UserDto getByEmail(String email);
 
+    List<GameObject> getPrincipalGameObjects(Principal principal);
+
+    boolean existsById(Integer id);
 }

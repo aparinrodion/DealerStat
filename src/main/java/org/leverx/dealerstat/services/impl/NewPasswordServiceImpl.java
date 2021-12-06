@@ -38,9 +38,13 @@ public class NewPasswordServiceImpl implements NewPasswordService {
     @Override
     public void resetPassword(NewPasswordDto newPasswordDto) {
         Integer id = getIdIfCodeExists(newPasswordDto.getCode());
-        //TODO encode password
         userService.setPasswordById(id, encodePassword(newPasswordDto.getPassword()));
         redisService.delete(newPasswordDto.getCode());
+    }
+
+    @Override
+    public boolean checkCode(Object code) {
+        return redisService.contains(code);
     }
 
     private String encodePassword(String password) {

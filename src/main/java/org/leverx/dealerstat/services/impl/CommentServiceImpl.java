@@ -8,6 +8,7 @@ import org.leverx.dealerstat.models.Comment;
 import org.leverx.dealerstat.models.User;
 import org.leverx.dealerstat.repositories.CommentsRepository;
 import org.leverx.dealerstat.services.CommentService;
+import org.leverx.dealerstat.services.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import java.util.List;
 public class CommentServiceImpl implements CommentService {
     private final CommentsRepository commentsRepository;
     private final CommentMapper commentMapper;
+    private final UserService userService;
 
     @Override
     public List<Comment> getAll() {
@@ -34,6 +36,9 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public CommentDto save(CommentDto commentDto) {
+        if (!userService.existsById(commentDto.getTrader_id())) {
+            throw new EntityNotFoundException(String.valueOf(User.class), commentDto.getTrader_id());
+        }
         Comment comment = commentsRepository.save(commentMapper.mapToComment(commentDto));
         commentDto = commentMapper.mapToDto(comment);
         return commentDto;

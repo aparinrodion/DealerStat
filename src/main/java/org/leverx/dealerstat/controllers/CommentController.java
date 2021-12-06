@@ -24,6 +24,12 @@ public class CommentController {
         return userDto.getComments();
     }
 
+    @PostMapping("/users/{id}/comments")
+    public void addComment(@PathVariable Integer id, @RequestBody CommentDto commentDto) {
+        commentDto.setTrader_id(id);
+        commentService.save(commentDto);
+    }
+
     @GetMapping("/comments/{id}")
     public CommentDto getComment(@PathVariable Integer id) {
         return commentService.getById(id);

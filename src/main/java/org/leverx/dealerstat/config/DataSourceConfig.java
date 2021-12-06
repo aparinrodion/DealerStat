@@ -28,6 +28,8 @@ import java.util.Properties;
 @PropertySource({"classpath:application.properties"})
 @ComponentScan({"org.leverx.dealerstat"})
 @EnableJpaRepositories(basePackages = "org.leverx.dealerstat")
+
+@EnableJpaAuditing(auditorAwareRef = "auditorAware")
 public class DataSourceConfig {
     private static final String HIBERNATE_DIALECT = "hibernate.dialect";
     @Value("${jdbc.driverClassName}")
@@ -40,6 +42,11 @@ public class DataSourceConfig {
     private String jdbcPassword;
     @Value("${hibernate.dialect}")
     private String hibernateDialect;
+
+    @Bean
+    AuditorAware<String> auditorAware() {
+        return new AuditorAwareImpl();
+    }
 
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertyConfigInDev() {
@@ -79,10 +86,11 @@ public class DataSourceConfig {
     public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
         return new PersistenceExceptionTranslationPostProcessor();
     }
-    
+
     private Properties additionalProperties() {
         final Properties hibernateProperties = new Properties();
         hibernateProperties.setProperty(HIBERNATE_DIALECT, hibernateDialect);
         return hibernateProperties;
     }
+
 }

@@ -17,6 +17,7 @@ import java.util.Date;
 @Table(name = "comments")
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Comment implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,6 +29,7 @@ public class Comment implements Serializable {
     private boolean approved;
     @Column(name = "message")
     private String message;
+    @CreatedDate
     @Column(name = "created_at")
     @Temporal(TemporalType.DATE)
     private Date created_at;
