@@ -11,8 +11,8 @@ public class GameObjectDto {
     private String title;
     private String text;
     private GameObjectStatus status;
-    private Integer trader_id;
-    private Date created_at;
-    private Date updated_at;
-    private Integer game_id;
+    private Integer traderId;
+    private Date createdAt;
+    private Date updatedAt;
+    private Integer gameId;
 }

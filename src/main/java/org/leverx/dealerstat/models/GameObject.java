@@ -30,16 +30,16 @@ public class GameObject {
     @Column(name = "status")
     private GameObjectStatus status;
     @Column(name = "trader_id")
-    private Integer trader_id;
+    private Integer traderId;
     @Column(name = "created_at")
     @Temporal(TemporalType.DATE)
     @CreatedDate
-    private Date created_at;
+    private Date createdAt;
     @Column(name = "updated_at")
     @Temporal(TemporalType.DATE)
     @CreatedDate
     @LastModifiedDate
-    private Date updated_at;
+    private Date updatedAt;
     @Column(name = "game_id")
-    private Integer game_id;
+    private Integer gameId;
 }

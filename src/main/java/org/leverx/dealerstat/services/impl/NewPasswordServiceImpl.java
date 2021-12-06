@@ -53,7 +53,7 @@ public class NewPasswordServiceImpl implements NewPasswordService {
 
     private void sendCodeMessage(UserDto userDto, String subject, Integer code) {
         String message = String.format(RESETTING_PASSWORD_TEXT_PATTERN,
-                userDto.getFirst_name(), code);
+                userDto.getFirstName(), code);
         mailSenderService.sendMessage(userDto, RESETTING_PASSWORD_SUBJECT, message);
     }
 

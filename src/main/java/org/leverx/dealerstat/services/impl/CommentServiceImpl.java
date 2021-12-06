@@ -36,8 +36,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public CommentDto save(CommentDto commentDto) {
-        if (!userService.existsById(commentDto.getTrader_id())) {
-            throw new EntityNotFoundException(String.valueOf(User.class), commentDto.getTrader_id());
+        if (!userService.existsById(commentDto.getTraderId())) {
+            throw new EntityNotFoundException(String.valueOf(User.class), commentDto.getTraderId());
         }
         Comment comment = commentsRepository.save(commentMapper.mapToComment(commentDto));
         commentDto = commentMapper.mapToDto(comment);

@@ -12,11 +12,11 @@ import java.util.Set;
 @Data
 public class UserDto {
     private int id;
-    private String first_name;
-    private String last_name;
+    private String firstName;
+    private String lastName;
     private String password;
     private String email;
-    private Date created_at;
+    private Date createdAt;
     private boolean confirmed = false;
     private Set<Role> roles;
     private Set<Comment> comments;

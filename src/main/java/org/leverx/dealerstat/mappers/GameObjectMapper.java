@@ -14,10 +14,10 @@ public class GameObjectMapper {
         gameObject.setTitle(gameObjectDto.getTitle());
         gameObject.setText(gameObjectDto.getText());
         gameObject.setStatus(gameObjectDto.getStatus());
-        gameObject.setTrader_id(gameObjectDto.getTrader_id());
-        gameObject.setCreated_at(gameObjectDto.getCreated_at());
-        gameObject.setUpdated_at(gameObjectDto.getUpdated_at());
-        gameObject.setGame_id(gameObjectDto.getGame_id());
+        gameObject.setTraderId(gameObjectDto.getTraderId());
+        gameObject.setCreatedAt(gameObjectDto.getCreatedAt());
+        gameObject.setUpdatedAt(gameObjectDto.getUpdatedAt());
+        gameObject.setGameId(gameObjectDto.getGameId());
         return gameObject;
     }
 
@@ -27,10 +27,10 @@ public class GameObjectMapper {
         gameObjectDto.setTitle(gameObject.getTitle());
         gameObjectDto.setText(gameObject.getText());
         gameObjectDto.setStatus(gameObject.getStatus());
-        gameObjectDto.setTrader_id(gameObject.getTrader_id());
-        gameObjectDto.setCreated_at(gameObject.getCreated_at());
-        gameObjectDto.setUpdated_at(gameObject.getUpdated_at());
-        gameObjectDto.setGame_id(gameObject.getGame_id());
+        gameObjectDto.setTraderId(gameObject.getTraderId());
+        gameObjectDto.setCreatedAt(gameObject.getCreatedAt());
+        gameObjectDto.setUpdatedAt(gameObject.getUpdatedAt());
+        gameObjectDto.setGameId(gameObject.getGameId());
         return gameObjectDto;
     }
 }

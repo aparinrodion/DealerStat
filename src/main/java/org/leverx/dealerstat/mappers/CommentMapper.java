@@ -9,24 +9,24 @@ public class CommentMapper {
     public Comment mapToComment(CommentDto commentDto) {
         Comment comment = new Comment();
         comment.setId(commentDto.getId());
-        comment.setTrader_id(commentDto.getTrader_id());
+        comment.setTraderId(commentDto.getTraderId());
         comment.setApproved(commentDto.isApproved());
         comment.setMessage(commentDto.getMessage());
-        comment.setCreated_at(commentDto.getCreated_at());
+        comment.setCreatedAt(commentDto.getCreatedAt());
         comment.setRating(commentDto.getRating());
-        comment.setAuthor_email(commentDto.getAuthor_email());
+        comment.setAuthorEmail(commentDto.getAuthorEmail());
         return comment;
     }
 
     public CommentDto mapToDto(Comment comment) {
         CommentDto commentDto = new CommentDto();
         commentDto.setId(comment.getId());
-        commentDto.setTrader_id(comment.getTrader_id());
+        commentDto.setTraderId(comment.getTraderId());
         commentDto.setApproved(comment.isApproved());
         commentDto.setMessage(comment.getMessage());
-        commentDto.setCreated_at(comment.getCreated_at());
+        commentDto.setCreatedAt(comment.getCreatedAt());
         commentDto.setRating(comment.getRating());
-        commentDto.setAuthor_email(comment.getAuthor_email());
+        commentDto.setAuthorEmail(comment.getAuthorEmail());
         return commentDto;
     }
 }

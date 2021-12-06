@@ -11,11 +11,11 @@ public class UserMapper {
     public User mapToUser(UserDto userDto) {
         User user = new User();
         user.setId(userDto.getId());
-        user.setFirst_name(userDto.getFirst_name());
-        user.setLast_name(userDto.getLast_name());
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
         user.setPassword(userDto.getPassword());
         user.setEmail(userDto.getEmail());
-        user.setCreated_at(userDto.getCreated_at());
+        user.setCreatedAt(userDto.getCreatedAt());
         user.setConfirmed(userDto.isConfirmed());
         user.setRoles(userDto.getRoles());
         user.setComments(userDto.getComments());
@@ -26,11 +26,11 @@ public class UserMapper {
     public UserDto mapToDto(User user) {
         UserDto userDto = new UserDto();
         userDto.setId(user.getId());
-        userDto.setFirst_name(user.getFirst_name());
-        userDto.setLast_name(user.getLast_name());
+        userDto.setFirstName(user.getFirstName());
+        userDto.setLastName(user.getLastName());
         userDto.setPassword(user.getPassword());
         userDto.setEmail(user.getEmail());
-        userDto.setCreated_at(user.getCreated_at());
+        userDto.setCreatedAt(user.getCreatedAt());
         userDto.setConfirmed(user.isConfirmed());
         userDto.setRoles(user.getRoles());
         userDto.setComments(user.getComments());

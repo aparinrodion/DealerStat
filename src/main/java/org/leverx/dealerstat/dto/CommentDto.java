@@ -7,10 +7,10 @@ import java.util.Date;
 @Data
 public class CommentDto {
     private Integer id;
-    private Integer trader_id;
+    private Integer traderId;
     private boolean approved;
     private String message;
-    private Date created_at;
+    private Date createdAt;
     private Integer rating;
-    private String author_email;
+    private String authorEmail;
 }

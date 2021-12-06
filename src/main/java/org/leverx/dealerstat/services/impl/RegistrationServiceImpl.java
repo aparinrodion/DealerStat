@@ -14,7 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -49,7 +48,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     private void sendConfirmMessage(UserDto userDto, Integer hashCode) {
         String message = String.format(CONFIRMATION_TEXT_PATTERN +
-                CONFIRMATION_LINK_PATTERN, userDto.getFirst_name(), hashCode);
+                CONFIRMATION_LINK_PATTERN, userDto.getFirstName(), hashCode);
         mailSenderService.sendMessage(userDto, CONFIRMATION_SUBJECT, message);
     }
 

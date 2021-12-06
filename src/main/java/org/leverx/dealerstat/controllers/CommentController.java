@@ -6,10 +6,8 @@ import org.leverx.dealerstat.dto.UserDto;
 import org.leverx.dealerstat.models.Comment;
 import org.leverx.dealerstat.services.CommentService;
 import org.leverx.dealerstat.services.UserService;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -26,7 +24,7 @@ public class CommentController {
 
     @PostMapping("/users/{id}/comments")
     public void addComment(@PathVariable Integer id, @RequestBody CommentDto commentDto) {
-        commentDto.setTrader_id(id);
+        commentDto.setTraderId(id);
         commentService.save(commentDto);
     }
 

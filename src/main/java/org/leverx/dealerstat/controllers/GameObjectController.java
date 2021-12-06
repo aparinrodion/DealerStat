@@ -2,9 +2,14 @@ package org.leverx.dealerstat.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.leverx.dealerstat.dto.GameObjectDto;
+import org.leverx.dealerstat.dto.GameObjectsPaginationDto;
 import org.leverx.dealerstat.models.GameObject;
 import org.leverx.dealerstat.services.GameObjectService;
 import org.leverx.dealerstat.services.UserService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -22,8 +27,17 @@ public class GameObjectController {
     }
 
     @GetMapping("/objects")
-    public List<GameObject> getAll() {
-        return gameObjectService.getAll();
+    public List<GameObjectDto> getAll(@RequestParam(defaultValue = "0") Integer skip,
+                                      @RequestParam(defaultValue = "10") Integer limit,
+                                      @RequestParam(required = false) Integer traderId,
+                                      @RequestParam(required = false) Integer gameId) {
+        Pageable pageable = PageRequest.of(skip, limit);
+        GameObjectsPaginationDto gameObjectsPaginationDto =
+                GameObjectsPaginationDto.builder()
+                        .traderId(traderId)
+                        .gameId(gameId)
+                        .pageable(pageable).build();
+        return gameObjectService.getAllByGameIdAndTraderId(gameObjectsPaginationDto);
     }
 
     @GetMapping("/objects/{id}")

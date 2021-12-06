@@ -24,7 +24,7 @@ public class Comment implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Column(name = "trader_id")
-    private Integer trader_id;
+    private Integer traderId;
     @Column(name = "approved")
     private boolean approved;
     @Column(name = "message")
@@ -32,9 +32,9 @@ public class Comment implements Serializable {
     @CreatedDate
     @Column(name = "created_at")
     @Temporal(TemporalType.DATE)
-    private Date created_at;
+    private Date createdAt;
     @Column(name = "rating")
     private Integer rating;
     @Column(name = "author_email")
-    private String author_email;
+    private String authorEmail;
 }
