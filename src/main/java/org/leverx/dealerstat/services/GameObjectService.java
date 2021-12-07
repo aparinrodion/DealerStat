@@ -12,7 +12,7 @@ import java.util.List;
 public interface GameObjectService {
     GameObjectDto save(GameObjectDto gameObjectDto);
 
-    List<GameObject> getAll(Pageable pageable);
+    List<GameObjectDto> getAll(Pageable pageable);
 
     GameObjectDto deleteById(Integer id);
 

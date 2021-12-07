@@ -35,10 +35,10 @@ public class GameObjectServiceImpl implements GameObjectService {
     }
 
     @Override
-    public List<GameObject> getAll(Pageable pageable) {
+    public List<GameObjectDto> getAll(Pageable pageable) {
         List<GameObject> gameObjects = new ArrayList<>();
         gameObjectRepository.findAll(pageable).forEach(gameObjects::add);
-        return gameObjects;
+        return gameObjects.stream().map(gameObjectMapper::mapToDto).collect(Collectors.toList());
     }
 
     @Override

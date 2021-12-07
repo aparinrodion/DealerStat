@@ -9,6 +9,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 @Entity
@@ -36,7 +37,8 @@ public class User {
     private Date createdAt;
     @Column(name = "confirmed")
     private boolean confirmed = false;
-
+    @Column(name = "approved")
+    private boolean approved = false;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
@@ -49,6 +51,9 @@ public class User {
 
     @OneToMany(mappedBy = "traderId", fetch = FetchType.EAGER)
     private Set<GameObject> gameObjects;
+
+    @Column(name = "rating")
+    private double rating = 0;
 
 
 }

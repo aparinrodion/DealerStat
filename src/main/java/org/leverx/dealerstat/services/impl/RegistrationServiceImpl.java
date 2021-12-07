@@ -2,7 +2,7 @@ package org.leverx.dealerstat.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.leverx.dealerstat.dto.UserDto;
-import org.leverx.dealerstat.exceptions.UserAlreadyExistsException;
+import org.leverx.dealerstat.exceptions.UserWithEmailAlreadyExistsException;
 import org.leverx.dealerstat.mappers.UserMapper;
 import org.leverx.dealerstat.models.Role;
 import org.leverx.dealerstat.models.User;
@@ -32,11 +32,12 @@ public class RegistrationServiceImpl implements RegistrationService {
 
 
     @Override
-    public void register(UserDto userDto) {
+    public UserDto register(UserDto userDto) {
         User user = createUserIfNotExist(userDto);
         user.setId(userService.save(userMapper.mapToDto(user)).getId());
         redisService.save(user.hashCode(), user.getId(), TIME, TIME_UNIT);
         sendConfirmMessage(userMapper.mapToDto(user), user.hashCode());
+        return userMapper.mapToDto(user);
     }
 
     @Override
@@ -58,10 +59,9 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     private User createUserIfNotExist(UserDto userDto) {
         if (userService.existsByEmail(userDto.getEmail())) {
-            throw new UserAlreadyExistsException(userDto.getEmail());
+            throw new UserWithEmailAlreadyExistsException(userDto.getEmail());
         } else {
             User user = userMapper.mapToUser(userDto);
-            //user.setCreated_at(new Date());
             user.setPassword(encodePassword(userDto.getPassword()));
             user.setRoles(Collections.singleton(Role.TRADER));
             return user;

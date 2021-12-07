@@ -1,10 +1,8 @@
 package org.leverx.dealerstat.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.aspectj.apache.bcel.classfile.Code;
 import org.leverx.dealerstat.dto.NewPasswordDto;
 import org.leverx.dealerstat.dto.UserDto;
-import org.leverx.dealerstat.models.User;
 import org.leverx.dealerstat.services.NewPasswordService;
 import org.leverx.dealerstat.services.RegistrationService;
 import org.leverx.dealerstat.services.UserService;
@@ -21,8 +19,13 @@ public class AuthController {
     private final NewPasswordService newPasswordService;
 
     @GetMapping
-    public List<User> register() {
-        return userService.getAll();
+    public List<UserDto> getApprovedUsers() {
+        return userService.getApprovedUsers();
+    }
+
+    @GetMapping("/admin")
+    public List<UserDto> getAllUsers() {
+        return userService.getUsers();
     }
 
     @GetMapping("/{id}")
@@ -30,10 +33,14 @@ public class AuthController {
         return userService.get(id);
     }
 
+    @PostMapping("/{id}/approve")
+    public void approve(@PathVariable Integer id) {
+        userService.setApprovedById(id, true);
+    }
 
     @PostMapping
-    public void register(@RequestBody UserDto userDto) {
-        registrationService.register(userDto);
+    public UserDto register(@RequestBody UserDto userDto) {
+        return registrationService.register(userDto);
     }
 
     @PostMapping("/confirm/{hash_code}")

@@ -4,6 +4,8 @@ import org.leverx.dealerstat.models.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface UserRepository extends CrudRepository<User, Integer> {
     boolean existsByEmail(String email);
@@ -11,4 +13,6 @@ public interface UserRepository extends CrudRepository<User, Integer> {
     User findByEmail(String email);
 
     boolean existsById(Integer id);
+
+    List<User> getAllByApproved(boolean approved);
 }

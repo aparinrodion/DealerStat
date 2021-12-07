@@ -8,7 +8,7 @@ import java.util.List;
 public interface GameService {
     GameDto save(GameDto gameDto);
 
-    List<Game> getAll();
+    List<GameDto> getAll();
 
     GameDto getById(Integer id);
 }

@@ -37,4 +37,6 @@ public class Comment implements Serializable {
     private Integer rating;
     @Column(name = "author_email")
     private String authorEmail;
+
+
 }

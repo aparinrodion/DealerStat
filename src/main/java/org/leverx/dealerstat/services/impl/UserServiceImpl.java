@@ -1,9 +1,9 @@
 package org.leverx.dealerstat.services.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.leverx.dealerstat.dto.GameObjectDto;
 import org.leverx.dealerstat.dto.UserDto;
 import org.leverx.dealerstat.exceptions.EntityNotFoundException;
+import org.leverx.dealerstat.exceptions.UserWithEmailAlreadyExistsException;
 import org.leverx.dealerstat.exceptions.UserWithEmailNotFoundException;
 import org.leverx.dealerstat.mappers.UserMapper;
 import org.leverx.dealerstat.models.GameObject;
@@ -15,9 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,11 +25,21 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
+    private static final String UNKNOWN_FIRST_NAME = "unknown_first_name";
+    private static final String UNKNOWN_LAST_NAME = "unknown_last_name";
+    private static final String UNKNOWN_PASSWORD = "t;$q)UC8{UMd>a}]";
+
     @Override
-    public List<User> getAll() {
+    public List<UserDto> getUsers() {
         List<User> users = new ArrayList<>();
         userRepository.findAll().forEach(users::add);
-        return users;
+        return users.stream().map(userMapper::mapToDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserDto> getApprovedUsers() {
+        List<User> users = new ArrayList<>(userRepository.getAllByApproved(true));
+        return users.stream().map(userMapper::mapToDto).collect(Collectors.toList());
     }
 
     @Override
@@ -41,9 +50,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto save(UserDto userDto) {
-        User user = userMapper.mapToUser(userDto);
-        user = userRepository.save(user);
-        return userMapper.mapToDto(user);
+        if (!existsByEmail(userDto.getEmail())) {
+            User user = userMapper.mapToUser(userDto);
+            user = userRepository.save(user);
+            return userMapper.mapToDto(user);
+        } else throw new UserWithEmailAlreadyExistsException(userDto.getEmail());
     }
 
     @Override
@@ -54,7 +65,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public void setConfirmedById(Integer id, boolean isActivated) {
         UserDto userDto = get(id);
-        userDto.setConfirmed(true);
+        userDto.setConfirmed(isActivated);
+        save(userDto);
+    }
+
+    @Override
+    public void setApprovedById(Integer id, boolean isActivated) {
+        UserDto userDto = get(id);
+        userDto.setApproved(isActivated);
         save(userDto);
     }
 
@@ -89,5 +107,24 @@ public class UserServiceImpl implements UserService {
         return userRepository.existsById(id);
     }
 
+    @Override
+    public UserDto createUnknownUserByEmail(String email) {
+        if (!userRepository.existsByEmail(email)) {
+            UserDto userDto = new UserDto();
+            userDto.setFirstName(UNKNOWN_FIRST_NAME);
+            userDto.setLastName(UNKNOWN_LAST_NAME);
+            userDto.setPassword(UNKNOWN_PASSWORD);
+            userDto.setEmail(email);
+            return userDto;
+        } else throw new UserWithEmailAlreadyExistsException(email);
+
+    }
+
+    @Override
+    public void updateRatingById(Integer id) {
+        UserDto userDto = get(id);
+        userDto.countRating();
+        userRepository.save(userMapper.mapToUser(userDto));
+    }
 
 }

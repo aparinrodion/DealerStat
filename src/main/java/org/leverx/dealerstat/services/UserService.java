@@ -10,7 +10,9 @@ import java.util.List;
 
 @Service
 public interface UserService {
-    List<User> getAll();
+    List<UserDto> getUsers();
+
+    List<UserDto> getApprovedUsers();
 
     UserDto get(Integer id);
 
@@ -19,6 +21,8 @@ public interface UserService {
     boolean existsByEmail(String email);
 
     void setConfirmedById(Integer id, boolean isActivated);
+
+    void setApprovedById(Integer id, boolean isActivated);
 
     void setPasswordById(Integer id, String password);
 
@@ -29,4 +33,8 @@ public interface UserService {
     List<GameObject> getPrincipalGameObjects(Principal principal);
 
     boolean existsById(Integer id);
+
+    UserDto createUnknownUserByEmail(String email);
+
+    void updateRatingById(Integer id);
 }

@@ -7,11 +7,15 @@ import org.leverx.dealerstat.models.Comment;
 import java.util.List;
 
 public interface CommentService {
-    List<Comment> getAll();
+    List<CommentDto> getAll();
 
     CommentDto getById(Integer id);
 
     CommentDto save(CommentDto commentDto);
 
-    CommentDto delete(Integer id);
+    void setApprovedById(Integer id, boolean isApproved);
+
+    void delete(CommentDto commentDto, String authorEmail);
+
+    CommentDto updateComment(CommentDto commentDto, String authorEmail);
 }

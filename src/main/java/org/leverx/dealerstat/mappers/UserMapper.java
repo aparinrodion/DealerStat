@@ -20,6 +20,9 @@ public class UserMapper {
         user.setRoles(userDto.getRoles());
         user.setComments(userDto.getComments());
         user.setGameObjects(userDto.getGameObjects());
+        user.setApproved(userDto.isApproved());
+
+        user.setRating(userDto.getRating());
         return user;
     }
 
@@ -35,6 +38,9 @@ public class UserMapper {
         userDto.setRoles(user.getRoles());
         userDto.setComments(user.getComments());
         userDto.setGameObjects(user.getGameObjects());
+        userDto.setApproved(user.isApproved());
+
+        userDto.setRating(user.getRating());
         return userDto;
 
     }

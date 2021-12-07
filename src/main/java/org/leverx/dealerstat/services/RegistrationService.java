@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface RegistrationService {
-    void register(UserDto userDto);
+    UserDto register(UserDto userDto);
 
     void confirm(Integer hashCode);
 }
