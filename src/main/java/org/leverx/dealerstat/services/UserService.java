@@ -3,6 +3,7 @@ package org.leverx.dealerstat.services;
 import org.leverx.dealerstat.dto.UserDto;
 import org.leverx.dealerstat.models.GameObject;
 import org.leverx.dealerstat.models.User;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
@@ -12,7 +13,7 @@ import java.util.List;
 public interface UserService {
     List<UserDto> getUsers();
 
-    List<UserDto> getApprovedUsers();
+    List<UserDto> getApprovedUsers(Pageable pageable);
 
     UserDto get(Integer id);
 

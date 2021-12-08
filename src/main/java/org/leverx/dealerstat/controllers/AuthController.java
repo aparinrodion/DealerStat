@@ -1,11 +1,17 @@
 package org.leverx.dealerstat.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.leverx.dealerstat.dto.LoginDto;
 import org.leverx.dealerstat.dto.NewPasswordDto;
 import org.leverx.dealerstat.dto.UserDto;
+import org.leverx.dealerstat.security.JwtProvider;
+import org.leverx.dealerstat.services.LoginService;
 import org.leverx.dealerstat.services.NewPasswordService;
 import org.leverx.dealerstat.services.RegistrationService;
 import org.leverx.dealerstat.services.UserService;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,20 +23,14 @@ public class AuthController {
     private final UserService userService;
     private final RegistrationService registrationService;
     private final NewPasswordService newPasswordService;
+    private final LoginService loginService;
+    private final JwtProvider jwtProvider;
 
-    @GetMapping
-    public List<UserDto> getApprovedUsers() {
-        return userService.getApprovedUsers();
-    }
 
-    @GetMapping("/admin")
-    public List<UserDto> getAllUsers() {
-        return userService.getUsers();
-    }
-
-    @GetMapping("/{id}")
-    public UserDto get(@PathVariable Integer id) {
-        return userService.get(id);
+    @PostMapping("/login")
+    public String login(@RequestBody LoginDto loginDto) {
+        loginService.authorize(loginDto);
+        return jwtProvider.generateToken(loginDto.getEmail());
     }
 
     @PostMapping("/{id}/approve")
@@ -47,7 +47,6 @@ public class AuthController {
     public void confirm(@PathVariable Integer hash_code) {
         registrationService.confirm(hash_code);
     }
-
 
     @GetMapping("/check_code")
     public boolean checkCode(@RequestParam Integer code) {

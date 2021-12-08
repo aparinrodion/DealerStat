@@ -10,6 +10,7 @@ import org.leverx.dealerstat.models.GameObject;
 import org.leverx.dealerstat.models.User;
 import org.leverx.dealerstat.repositories.UserRepository;
 import org.leverx.dealerstat.services.UserService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,8 +38,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getApprovedUsers() {
-        List<User> users = new ArrayList<>(userRepository.getAllByApproved(true));
+    public List<UserDto> getApprovedUsers(Pageable pageable) {
+        List<User> users = new ArrayList<>(userRepository.getAllByApproved(true, pageable));
         return users.stream().map(userMapper::mapToDto).collect(Collectors.toList());
     }
 
@@ -70,10 +71,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void setApprovedById(Integer id, boolean isActivated) {
+    public void setApprovedById(Integer id, boolean isApproved) {
         UserDto userDto = get(id);
-        userDto.setApproved(isActivated);
-        save(userDto);
+        if (userDto.isApproved() != isApproved) {
+            userDto.setApproved(isApproved);
+            save(userDto);
+        }
     }
 
     @Override

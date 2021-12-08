@@ -31,7 +31,7 @@ public class CommentController {
                 .map(commentMapper::mapToDto).collect(Collectors.toList());
     }
 
-    @GetMapping("/comments")
+    @GetMapping("/comments/admin")
     public List<CommentDto> getAllComments() {
         return commentService.getAll();
     }
@@ -72,6 +72,7 @@ public class CommentController {
         commentDto.setAuthorEmail(email);
         commentService.updateComment(commentDto, email);
     }
+
 
     @DeleteMapping("/comments/{id}")
     public void deletesComment(@PathVariable Integer id, @RequestParam String email, @RequestParam CommentDto commentDto) {

@@ -22,9 +22,13 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public GameDto save(GameDto gameDto) {
-        Game game = gameMapper.mapToGame(gameDto);
-        game = gamesRepository.save(game);
-        return gameMapper.mapToDto(game);
+        if (!gamesRepository.existsByName(gameDto.getName())) {
+            Game game = gameMapper.mapToGame(gameDto);
+            game = gamesRepository.save(game);
+            return gameMapper.mapToDto(game);
+        } else {
+            return gameMapper.mapToDto(gamesRepository.findByName(gameDto.getName()));
+        }
 
     }
 
