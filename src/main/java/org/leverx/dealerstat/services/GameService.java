@@ -1,7 +1,6 @@
 package org.leverx.dealerstat.services;
 
 import org.leverx.dealerstat.dto.GameDto;
-import org.leverx.dealerstat.models.Game;
 
 import java.util.List;
 
@@ -11,4 +10,6 @@ public interface GameService {
     List<GameDto> getAll();
 
     GameDto getById(Integer id);
+
+    GameDto updateById(Integer id, GameDto gameDto);
 }

@@ -6,10 +6,7 @@ import org.leverx.dealerstat.services.UserService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,14 +15,15 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
-    private static final Integer SKIP = 0;
-    private static final Integer LIMIT = 10;
+    private static final String SKIP = "0";
+    private static final String LIMIT = "10";
     private static final String RATING = "rating";
 
-
     @GetMapping
-    public List<UserDto> getApprovedUsers() {
-        Pageable pageable = PageRequest.of(SKIP, LIMIT,
+    public List<UserDto> getApprovedUsers(
+            @RequestParam(defaultValue = SKIP) Integer skip,
+            @RequestParam(defaultValue = LIMIT) Integer limit) {
+        Pageable pageable = PageRequest.of(skip, limit,
                 Sort.by(Sort.Direction.DESC, RATING));
         return userService.getApprovedUsers(pageable);
     }

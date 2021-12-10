@@ -1,8 +1,6 @@
 package org.leverx.dealerstat.services;
 
-import com.sun.mail.util.LineInputStream;
 import org.leverx.dealerstat.dto.CommentDto;
-import org.leverx.dealerstat.models.Comment;
 
 import java.util.List;
 
@@ -15,7 +13,12 @@ public interface CommentService {
 
     void setApprovedById(Integer id, boolean isApproved);
 
-    void delete(CommentDto commentDto, String authorEmail);
+    void delete(Integer id, String authorEmail);
 
-    CommentDto updateComment(CommentDto commentDto, String authorEmail);
+    CommentDto updateComment(CommentDto commentDto);
+
+    List<CommentDto> getApprovedUserComments(Integer id);
+
+    CommentDto addCommentToNonExistingTrader(String traderEmail, CommentDto commentDto);
+
 }

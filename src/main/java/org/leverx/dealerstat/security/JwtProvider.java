@@ -1,12 +1,11 @@
 package org.leverx.dealerstat.security;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
-import io.jsonwebtoken.Jwts;
-
 
 import java.time.LocalDate;
 import java.time.ZoneId;

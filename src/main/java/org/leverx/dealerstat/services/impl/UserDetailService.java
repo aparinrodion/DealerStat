@@ -4,14 +4,13 @@ package org.leverx.dealerstat.services.impl;
 import lombok.RequiredArgsConstructor;
 import org.leverx.dealerstat.dto.UserDto;
 import org.leverx.dealerstat.exceptions.EmailNotConfirmedException;
-import org.leverx.dealerstat.models.Role;
+import org.leverx.dealerstat.model.Role;
 import org.leverx.dealerstat.services.UserService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +25,8 @@ public class UserDetailService implements UserDetailsService {
     @Transactional
     @Override
     public UserDetails loadUserByUsername(String email) {
-        UserDto userDto = getUserDtoIfEmailConfirmedElseThrowException(email);
+        //UserDto userDto = getUserDtoIfEmailConfirmedElseThrowException(email);
+        UserDto userDto = userService.getByEmail(email);
         return new User(userDto.getEmail(), userDto.getPassword(), mapRolesToAuthorities(userDto.getRoles()));
     }
 
@@ -42,7 +42,4 @@ public class UserDetailService implements UserDetailsService {
             return userService.getByEmail(email);
         }
     }
-
-
-
 }

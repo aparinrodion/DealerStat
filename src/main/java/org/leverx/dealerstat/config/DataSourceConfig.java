@@ -14,13 +14,10 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
-import java.util.Optional;
 import java.util.Properties;
 
 @Configuration
@@ -31,7 +28,7 @@ import java.util.Properties;
 
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")
 public class DataSourceConfig {
-    private static final String HIBERNATE_DIALECT = "hibernate.dialect";
+    private static final String HIBERNATE_DIALECT_PROP_NAME = "hibernate.dialect";
     @Value("${jdbc.driverClassName}")
     private String jdbcDriverClassname;
     @Value("${jdbc.url}")
@@ -43,8 +40,9 @@ public class DataSourceConfig {
     @Value("${hibernate.dialect}")
     private String hibernateDialect;
 
+    // try delete if not used
     @Bean
-    AuditorAware<String> auditorAware() {
+    /*public*/ AuditorAware<String> auditorAware() {
         return new AuditorAwareImpl();
     }
 
@@ -58,7 +56,7 @@ public class DataSourceConfig {
         final LocalContainerEntityManagerFactoryBean entityManagerFactoryBean =
                 new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setDataSource(dataSource());
-        entityManagerFactoryBean.setPackagesToScan("org.leverx.dealerstat.models");
+        entityManagerFactoryBean.setPackagesToScan("org.leverx.dealerstat.model");
         final HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         entityManagerFactoryBean.setJpaVendorAdapter(vendorAdapter);
         entityManagerFactoryBean.setJpaProperties(additionalProperties());
@@ -89,7 +87,7 @@ public class DataSourceConfig {
 
     private Properties additionalProperties() {
         final Properties hibernateProperties = new Properties();
-        hibernateProperties.setProperty(HIBERNATE_DIALECT, hibernateDialect);
+        hibernateProperties.setProperty(HIBERNATE_DIALECT_PROP_NAME, hibernateDialect);
         return hibernateProperties;
     }
 

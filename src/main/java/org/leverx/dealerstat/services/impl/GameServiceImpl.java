@@ -4,8 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.leverx.dealerstat.dto.GameDto;
 import org.leverx.dealerstat.exceptions.EntityNotFoundException;
 import org.leverx.dealerstat.mappers.GameMapper;
-import org.leverx.dealerstat.models.Game;
-import org.leverx.dealerstat.models.User;
+import org.leverx.dealerstat.model.Game;
 import org.leverx.dealerstat.repositories.GamesRepository;
 import org.leverx.dealerstat.services.GameService;
 import org.springframework.stereotype.Service;
@@ -29,7 +28,6 @@ public class GameServiceImpl implements GameService {
         } else {
             return gameMapper.mapToDto(gamesRepository.findByName(gameDto.getName()));
         }
-
     }
 
     @Override
@@ -41,7 +39,15 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public GameDto getById(Integer id) {
-        return gameMapper.mapToDto(gamesRepository.findById(id).orElseThrow(() ->
-                new EntityNotFoundException(String.valueOf(Game.class), id)));
+        return gameMapper.mapToDto(gamesRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Game.class, id)));
+    }
+
+    @Override
+    public GameDto updateById(Integer id, GameDto gameDto) {
+        Game game = gamesRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Game.class, id));
+        game.setName(gameDto.getName());
+        return gameMapper.mapToDto(gamesRepository.save(game));
     }
 }

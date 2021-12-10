@@ -14,6 +14,8 @@ import java.util.Properties;
 @ComponentScan("org.leverx.dealerstat")
 @Configuration
 public class MailSenderConfig {
+    public static final String PROTOCOL_PROP_NAME = "mail.transport.protocol";
+
     @Value("${mail.host}")
     private String host;
     @Value("${mail.username}")
@@ -34,7 +36,7 @@ public class MailSenderConfig {
         javaMailSender.setPassword(password);
         javaMailSender.setPort(port);
         Properties properties = javaMailSender.getJavaMailProperties();
-        properties.setProperty("mail.transport.protocol", protocol);
+        properties.setProperty(PROTOCOL_PROP_NAME, protocol);
         return javaMailSender;
     }
 }

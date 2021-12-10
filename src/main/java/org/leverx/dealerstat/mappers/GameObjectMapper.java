@@ -2,7 +2,7 @@ package org.leverx.dealerstat.mappers;
 
 import lombok.NoArgsConstructor;
 import org.leverx.dealerstat.dto.GameObjectDto;
-import org.leverx.dealerstat.models.GameObject;
+import org.leverx.dealerstat.model.GameObject;
 import org.springframework.stereotype.Component;
 
 @Component

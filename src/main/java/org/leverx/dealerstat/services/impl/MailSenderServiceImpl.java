@@ -2,7 +2,7 @@ package org.leverx.dealerstat.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.leverx.dealerstat.dto.UserDto;
-import org.leverx.dealerstat.mailsender.MailSender;
+import org.leverx.dealerstat.mail.MailSender;
 import org.leverx.dealerstat.services.MailSenderService;
 import org.springframework.stereotype.Service;
 

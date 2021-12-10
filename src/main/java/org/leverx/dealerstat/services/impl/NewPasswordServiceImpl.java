@@ -17,15 +17,16 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 @Service
 public class NewPasswordServiceImpl implements NewPasswordService {
+    private static final Integer TIME = 24;
+    private static final TimeUnit TIME_UNIT = TimeUnit.HOURS;
+    private static final String RESETTING_PASSWORD_SUBJECT = "Resetting password";
+    private static final String RESETTING_PASSWORD_TEXT_PATTERN =
+            "Hello, %s! Here's code to confirm resetting password: %d";
+
     private final MailSenderService mailSenderService;
     private final UserService userService;
     private final RedisService redisService;
     private final PasswordEncoder passwordEncoder;
-    private static final Integer TIME = 24;
-    private static final TimeUnit TIME_UNIT = TimeUnit.HOURS;
-    private final static String RESETTING_PASSWORD_SUBJECT = "Resetting password";
-    private static final String RESETTING_PASSWORD_TEXT_PATTERN =
-            "Hello, %s! Here's code to confirm resetting password: %d";
 
     @Override
     public void forgotPassword(String email) {
@@ -72,6 +73,4 @@ public class NewPasswordServiceImpl implements NewPasswordService {
             return Integer.parseInt(String.valueOf(redisService.findByKey(code)));
         }
     }
-
-
 }

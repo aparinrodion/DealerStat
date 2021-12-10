@@ -1,7 +1,7 @@
 package org.leverx.dealerstat.mappers;
 
 import org.leverx.dealerstat.dto.CommentDto;
-import org.leverx.dealerstat.models.Comment;
+import org.leverx.dealerstat.model.Comment;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -1,10 +1,10 @@
-package org.leverx.dealerstat.models;
+package org.leverx.dealerstat.model;
 
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.leverx.dealerstat.dto.GameObjectStatus;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -23,6 +23,7 @@ public class GameObject {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
+
     @Column(name = "title")
     private String title;
     @Column(name = "text")
@@ -35,9 +36,10 @@ public class GameObject {
     @Temporal(TemporalType.DATE)
     @CreatedDate
     private Date createdAt;
+
     @Column(name = "updated_at")
     @Temporal(TemporalType.DATE)
-    @CreatedDate
+    //@CreatedDate
     @LastModifiedDate
     private Date updatedAt;
     @Column(name = "game_id")

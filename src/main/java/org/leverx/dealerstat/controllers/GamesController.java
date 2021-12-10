@@ -2,10 +2,10 @@ package org.leverx.dealerstat.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.leverx.dealerstat.dto.GameDto;
-import org.leverx.dealerstat.models.Game;
 import org.leverx.dealerstat.services.GameService;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -20,15 +20,12 @@ public class GamesController {
     }
 
     @PostMapping()
-    public void addGame(@RequestBody GameDto gameDto) {
-        gameService.save(gameDto);
+    public GameDto addGame(@RequestBody @Valid GameDto gameDto) {
+        return gameService.save(gameDto);
     }
 
     @PutMapping("/{id}")
-    public void updateGame(@RequestBody GameDto gameDto, @RequestParam Integer id) {
-        gameDto.setId(id);
-        gameService.save(gameDto);
+    public GameDto updateGame(@RequestBody @Valid GameDto gameDto, @PathVariable Integer id) {
+        return gameService.updateById(id, gameDto);
     }
-
-
 }

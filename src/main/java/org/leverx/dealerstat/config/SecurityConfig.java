@@ -34,8 +34,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/users/admin", "/comments/admin", "/**/approve")
-                .hasAuthority("ADMIN")
+                .antMatchers("/users/admin", "/comments/admin", "/**/approve", "/comments/{id}").hasAuthority("ADMIN")
+                .antMatchers("/auth", "/auth/check_code").permitAll()
                 .antMatchers("/auth/login", "/auth/confirm/{hash_code}").permitAll()
                 .antMatchers("/auth/forgot_password", "/auth/reset").permitAll()
                 .antMatchers("/comments/{id}", "/users", "/users/{id}").permitAll()
@@ -49,19 +49,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
+    /*@Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         daoAuthenticationProvider.setUserDetailsService(userDetailsService);
         return daoAuthenticationProvider;
-    }
-
-
+    }*/
 }

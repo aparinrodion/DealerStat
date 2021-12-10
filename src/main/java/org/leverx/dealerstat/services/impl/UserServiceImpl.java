@@ -1,13 +1,15 @@
 package org.leverx.dealerstat.services.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.leverx.dealerstat.dto.CommentDto;
 import org.leverx.dealerstat.dto.UserDto;
 import org.leverx.dealerstat.exceptions.EntityNotFoundException;
 import org.leverx.dealerstat.exceptions.UserWithEmailAlreadyExistsException;
 import org.leverx.dealerstat.exceptions.UserWithEmailNotFoundException;
+import org.leverx.dealerstat.mappers.CommentMapper;
 import org.leverx.dealerstat.mappers.UserMapper;
-import org.leverx.dealerstat.models.GameObject;
-import org.leverx.dealerstat.models.User;
+import org.leverx.dealerstat.model.GameObject;
+import org.leverx.dealerstat.model.User;
 import org.leverx.dealerstat.repositories.UserRepository;
 import org.leverx.dealerstat.services.UserService;
 import org.springframework.data.domain.Pageable;
@@ -17,18 +19,19 @@ import org.springframework.transaction.annotation.Transactional;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class UserServiceImpl implements UserService {
-    private final UserRepository userRepository;
-    private final UserMapper userMapper;
-
     private static final String UNKNOWN_FIRST_NAME = "unknown_first_name";
     private static final String UNKNOWN_LAST_NAME = "unknown_last_name";
     private static final String UNKNOWN_PASSWORD = "t;$q)UC8{UMd>a}]";
+
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     @Override
     public List<UserDto> getUsers() {
@@ -37,16 +40,20 @@ public class UserServiceImpl implements UserService {
         return users.stream().map(userMapper::mapToDto).collect(Collectors.toList());
     }
 
+    //@Transactional
     @Override
     public List<UserDto> getApprovedUsers(Pageable pageable) {
         List<User> users = new ArrayList<>(userRepository.getAllByApproved(true, pageable));
-        return users.stream().map(userMapper::mapToDto).collect(Collectors.toList());
+        //users.get(0).getComments().size();
+        return users.stream()
+                .map(userMapper::mapToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
     public UserDto get(Integer id) {
         return userMapper.mapToDto(userRepository.findById(id).orElseThrow(() ->
-                new EntityNotFoundException(String.valueOf(User.class), id)));
+                new EntityNotFoundException(User.class, id)));
     }
 
     @Override
@@ -67,23 +74,21 @@ public class UserServiceImpl implements UserService {
     public void setConfirmedById(Integer id, boolean isActivated) {
         UserDto userDto = get(id);
         userDto.setConfirmed(isActivated);
-        save(userDto);
+        userRepository.save(userMapper.mapToUser(userDto));
     }
 
     @Override
     public void setApprovedById(Integer id, boolean isApproved) {
         UserDto userDto = get(id);
-        if (userDto.isApproved() != isApproved) {
-            userDto.setApproved(isApproved);
-            save(userDto);
-        }
+        userDto.setApproved(isApproved);
+        userRepository.save(userMapper.mapToUser(userDto));
     }
 
     @Override
     public void setPasswordById(Integer id, String password) {
         UserDto userDto = get(id);
         userDto.setPassword(password);
-        save(userDto);
+        userRepository.save(userMapper.mapToUser(userDto));
     }
 
     @Override
@@ -100,7 +105,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<GameObject> getPrincipalGameObjects(Principal principal) {
+    public List<GameObject> getGameObjectsByPrincipal(Principal principal) {
         UserDto userDto = getByEmail(principal.getName());
         return new ArrayList<>(userDto.getGameObjects());
     }
@@ -126,8 +131,24 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateRatingById(Integer id) {
         UserDto userDto = get(id);
-        userDto.countRating();
+        countRating(userDto);
         userRepository.save(userMapper.mapToUser(userDto));
     }
 
+    private void countRating(UserDto userDto) {
+        List<CommentDto> comments = userDto.getComments()
+                .stream()
+                .map(comment -> new CommentMapper().mapToDto(comment))
+                .filter(CommentDto::isApproved)
+                .collect(Collectors.toList());
+        Double numberOfComments = (double) comments.size();
+        if (numberOfComments != 0.0) {
+            AtomicReference<Double> sum = new AtomicReference<>(0.0);
+            comments.forEach(comment -> sum.updateAndGet(v -> v + comment.getRating()));
+            Double rating = sum.get() / numberOfComments;
+            userDto.setRating(rating);
+        } else {
+            userDto.setRating(0.0);
+        }
+    }
 }

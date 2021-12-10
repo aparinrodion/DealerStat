@@ -7,7 +7,7 @@ import org.leverx.dealerstat.dto.UserDto;
 import org.leverx.dealerstat.exceptions.EntityNotFoundException;
 import org.leverx.dealerstat.exceptions.UserIsNotOwnerOfObjectException;
 import org.leverx.dealerstat.mappers.GameObjectMapper;
-import org.leverx.dealerstat.models.GameObject;
+import org.leverx.dealerstat.model.GameObject;
 import org.leverx.dealerstat.repositories.GameObjectRepository;
 import org.leverx.dealerstat.services.GameObjectService;
 import org.leverx.dealerstat.services.UserService;
@@ -15,7 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,18 +28,21 @@ public class GameObjectServiceImpl implements GameObjectService {
     private final UserService userService;
 
     @Override
-    public GameObjectDto save(GameObjectDto gameObjectDto) {
+    public GameObjectDto save(GameObjectDto gameObjectDto, Principal principal) {
+        gameObjectDto.setTraderId(userService.getByEmail(principal.getName()).getId());
+        gameObjectDto.setCreatedAt(getById(gameObjectDto.getGameId()).getCreatedAt());
+        gameObjectDto.setUpdatedAt(new Date());
         GameObject gameObject = gameObjectRepository.save(gameObjectMapper.mapToGameObject(gameObjectDto));
         gameObjectDto = gameObjectMapper.mapToDto(gameObject);
         return gameObjectDto;
     }
 
     @Override
-    public List<GameObjectDto> getAll(Pageable pageable) {
-        List<GameObject> gameObjects = new ArrayList<>();
-        gameObjectRepository.findAll(pageable).forEach(gameObjects::add);
-        return gameObjects.stream().map(gameObjectMapper::mapToDto).collect(Collectors.toList());
+    public GameObjectDto save(GameObjectDto gameObjectDto) {
+        GameObject gameObject = gameObjectRepository.save(gameObjectMapper.mapToGameObject(gameObjectDto));
+        return gameObjectMapper.mapToDto(gameObject);
     }
+
 
     @Override
     public GameObjectDto deleteById(Integer id) {
@@ -51,23 +54,31 @@ public class GameObjectServiceImpl implements GameObjectService {
     @Override
     public GameObjectDto getById(Integer id) {
         return gameObjectMapper.mapToDto(gameObjectRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException(String.valueOf(GameObject.class), id)));
+                () -> new EntityNotFoundException(GameObject.class, id)));
     }
 
     @Override
-    public GameObjectDto updateIfPrincipalIsOwner(GameObjectDto gameObjectDto, Principal principal) {
-        if (isPrincipalOwner(gameObjectDto, principal)) {
-            return save(gameObjectDto);
+    public GameObjectDto updateIfPrincipalIsOwner(Integer id, GameObjectDto gameObjectDto, Principal principal) {
+        GameObject gameObject = gameObjectRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(GameObject.class, id));
+
+        gameObjectDto.setTraderId(userService.getByEmail(principal.getName()).getId());
+        boolean isOwner = isPrincipalOwner(gameObjectMapper.mapToDto(gameObject), principal);
+        if (isOwner) {
+            return gameObjectMapper.mapToDto(gameObjectRepository.save(
+                    gameObjectMapper.mapToGameObject(gameObjectDto)));
         } else {
-            throw new UserIsNotOwnerOfObjectException(principal.getName(), gameObjectDto.getId());
+            throw new UserIsNotOwnerOfObjectException(principal.getName(),
+                    gameObjectDto.getId());
         }
 
     }
 
     @Override
-    public GameObjectDto deleteIfPrincipalIsOwner(GameObjectDto gameObjectDto, Principal principal) {
+    public GameObjectDto deleteIfPrincipalIsOwner(Integer id, Principal principal) {
+        GameObjectDto gameObjectDto = getById(id);
         if (isPrincipalOwner(gameObjectDto, principal)) {
-            return deleteById(gameObjectDto.getId());
+            return deleteById(id);
         } else {
             throw new UserIsNotOwnerOfObjectException(principal.getName(), gameObjectDto.getId());
         }
@@ -75,27 +86,30 @@ public class GameObjectServiceImpl implements GameObjectService {
 
     @Override
     public List<GameObjectDto> getAllByGameIdAndTraderId(GameObjectsPaginationDto gameObjectsPaginationDto) {
-        List<GameObject> gameObjects = getGameObjects(Optional.ofNullable(gameObjectsPaginationDto.getTraderId()),
-                Optional.ofNullable(gameObjectsPaginationDto.getGameId())
-                , gameObjectsPaginationDto.getPageable());
-        return gameObjects.stream().map(gameObjectMapper::mapToDto).collect(Collectors.toList());
+        List<GameObject> gameObjects = getGameObjects(Optional.ofNullable(
+                        gameObjectsPaginationDto.getTraderId()),
+                Optional.ofNullable(gameObjectsPaginationDto.getGameId()),
+                gameObjectsPaginationDto.getPageable());
+        return gameObjects.stream()
+                .map(gameObjectMapper::mapToDto)
+                .collect(Collectors.toList());
     }
 
 
-    private List<GameObject> getGameObjects(Optional<Integer> trader_id,
-                                            Optional<Integer> game_id, Pageable pageable) {
-        if (trader_id.isEmpty()) {
-            if (game_id.isEmpty()) {
+    private List<GameObject> getGameObjects(Optional<Integer> traderId,
+                                            Optional<Integer> gameId, Pageable pageable) {
+        if (traderId.isEmpty()) {
+            if (gameId.isEmpty()) {
                 return gameObjectRepository.findAll(pageable).stream().collect(Collectors.toList());
             } else {
-                return gameObjectRepository.getAllByGameId(game_id.get(), pageable);
+                return gameObjectRepository.getAllByGameId(gameId.get(), pageable);
             }
         } else {
-            if (game_id.isEmpty()) {
-                return gameObjectRepository.getAllByTraderId(trader_id.get(), pageable);
+            if (gameId.isEmpty()) {
+                return gameObjectRepository.getAllByTraderId(traderId.get(), pageable);
             } else {
-                return gameObjectRepository.getAllByTraderIdAndGameId(trader_id.get(),
-                        game_id.get(), pageable);
+                return gameObjectRepository.getAllByTraderIdAndGameId(traderId.get(),
+                        gameId.get(), pageable);
             }
         }
     }

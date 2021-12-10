@@ -9,12 +9,10 @@ import org.leverx.dealerstat.services.LoginService;
 import org.leverx.dealerstat.services.NewPasswordService;
 import org.leverx.dealerstat.services.RegistrationService;
 import org.leverx.dealerstat.services.UserService;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.validation.Valid;
+
 
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -39,13 +37,13 @@ public class AuthController {
     }
 
     @PostMapping
-    public UserDto register(@RequestBody UserDto userDto) {
+    public UserDto register(@Valid @RequestBody UserDto userDto) {
         return registrationService.register(userDto);
     }
 
-    @PostMapping("/confirm/{hash_code}")
-    public void confirm(@PathVariable Integer hash_code) {
-        registrationService.confirm(hash_code);
+    @PostMapping("/confirm/{code}")
+    public void confirm(@PathVariable Integer code) {
+        registrationService.confirm(code);
     }
 
     @GetMapping("/check_code")
@@ -53,14 +51,13 @@ public class AuthController {
         return newPasswordService.checkCode(code);
     }
 
-
     @PostMapping("/forgot_password")
     public void forgotPassword(@RequestParam String email) {
         newPasswordService.forgotPassword(email);
     }
 
     @PostMapping("/reset")
-    public void resetPassword(@RequestBody NewPasswordDto newPasswordDto) {
+    public void resetPassword(@RequestBody @Valid NewPasswordDto newPasswordDto) {
         newPasswordService.resetPassword(newPasswordDto);
     }
 

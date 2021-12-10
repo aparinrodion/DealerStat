@@ -1,4 +1,4 @@
-package org.leverx.dealerstat.models;
+package org.leverx.dealerstat.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +9,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Data
 @Entity

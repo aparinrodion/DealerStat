@@ -2,10 +2,8 @@ package org.leverx.dealerstat.mappers;
 
 import lombok.NoArgsConstructor;
 import org.leverx.dealerstat.dto.GameDto;
-import org.leverx.dealerstat.models.Game;
+import org.leverx.dealerstat.model.Game;
 import org.springframework.stereotype.Component;
-
-import javax.persistence.Column;
 
 @Component
 @NoArgsConstructor
