@@ -1,5 +1,6 @@
 package org.leverx.dealerstat.config;
 
+import org.leverx.dealerstat.security.AuditorAwareImpl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -40,9 +41,8 @@ public class DataSourceConfig {
     @Value("${hibernate.dialect}")
     private String hibernateDialect;
 
-    // try delete if not used
     @Bean
-    /*public*/ AuditorAware<String> auditorAware() {
+    AuditorAware<String> auditorAware() {
         return new AuditorAwareImpl();
     }
 

@@ -4,7 +4,6 @@ package org.leverx.dealerstat.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.leverx.dealerstat.dto.GameObjectStatus;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -29,7 +28,7 @@ public class GameObject {
     @Column(name = "text")
     private String text;
     @Column(name = "status")
-    private GameObjectStatus status;
+    private String status;
     @Column(name = "trader_id")
     private Integer traderId;
     @Column(name = "created_at")
@@ -39,7 +38,6 @@ public class GameObject {
 
     @Column(name = "updated_at")
     @Temporal(TemporalType.DATE)
-    //@CreatedDate
     @LastModifiedDate
     private Date updatedAt;
     @Column(name = "game_id")

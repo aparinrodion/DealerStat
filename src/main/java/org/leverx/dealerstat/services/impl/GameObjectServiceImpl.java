@@ -30,8 +30,6 @@ public class GameObjectServiceImpl implements GameObjectService {
     @Override
     public GameObjectDto save(GameObjectDto gameObjectDto, Principal principal) {
         gameObjectDto.setTraderId(userService.getByEmail(principal.getName()).getId());
-        gameObjectDto.setCreatedAt(getById(gameObjectDto.getGameId()).getCreatedAt());
-        gameObjectDto.setUpdatedAt(new Date());
         GameObject gameObject = gameObjectRepository.save(gameObjectMapper.mapToGameObject(gameObjectDto));
         gameObjectDto = gameObjectMapper.mapToDto(gameObject);
         return gameObjectDto;
@@ -61,7 +59,8 @@ public class GameObjectServiceImpl implements GameObjectService {
     public GameObjectDto updateIfPrincipalIsOwner(Integer id, GameObjectDto gameObjectDto, Principal principal) {
         GameObject gameObject = gameObjectRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(GameObject.class, id));
-
+        gameObjectDto.setCreatedAt(gameObject.getCreatedAt());
+        gameObjectDto.setUpdatedAt(new Date());
         gameObjectDto.setTraderId(userService.getByEmail(principal.getName()).getId());
         boolean isOwner = isPrincipalOwner(gameObjectMapper.mapToDto(gameObject), principal);
         if (isOwner) {

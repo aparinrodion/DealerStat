@@ -40,11 +40,9 @@ public class UserServiceImpl implements UserService {
         return users.stream().map(userMapper::mapToDto).collect(Collectors.toList());
     }
 
-    //@Transactional
     @Override
     public List<UserDto> getApprovedUsers(Pageable pageable) {
         List<User> users = new ArrayList<>(userRepository.getAllByApproved(true, pageable));
-        //users.get(0).getComments().size();
         return users.stream()
                 .map(userMapper::mapToDto)
                 .collect(Collectors.toList());
@@ -52,8 +50,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto get(Integer id) {
-        return userMapper.mapToDto(userRepository.findById(id).orElseThrow(() ->
-                new EntityNotFoundException(User.class, id)));
+        return userMapper.mapToDto(userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(User.class, id)));
     }
 
     @Override
@@ -91,10 +89,6 @@ public class UserServiceImpl implements UserService {
         userRepository.save(userMapper.mapToUser(userDto));
     }
 
-    @Override
-    public boolean isEmailConfirmedByEmail(String email) {
-        return getByEmail(email).isConfirmed();
-    }
 
     @Override
     public UserDto getByEmail(String email) {

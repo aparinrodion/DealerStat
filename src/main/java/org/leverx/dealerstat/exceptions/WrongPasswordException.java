@@ -1,6 +1,6 @@
 package org.leverx.dealerstat.exceptions;
 
-public class WrongPasswordException extends RuntimeException {
+public class WrongPasswordException extends DealerStatException {
     private static final String WRONG_PASSWORD = "Password doesnt match with user %s";
 
     public WrongPasswordException(String email) {

@@ -28,7 +28,7 @@ public class RedisServiceImpl implements RedisService {
 
     @Override
     public boolean contains(Object key) {
-        return redisTemplate.hasKey(key);
+        return Boolean.TRUE.equals(redisTemplate.hasKey(key));
     }
 
     @Override

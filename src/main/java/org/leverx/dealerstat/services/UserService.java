@@ -26,8 +26,6 @@ public interface UserService {
 
     void setPasswordById(Integer id, String password);
 
-    boolean isEmailConfirmedByEmail(String email);
-
     UserDto getByEmail(String email);
 
     List<GameObject> getGameObjectsByPrincipal(Principal principal);

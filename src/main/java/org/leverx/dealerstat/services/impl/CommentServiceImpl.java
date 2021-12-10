@@ -13,7 +13,6 @@ import org.leverx.dealerstat.services.CommentService;
 import org.leverx.dealerstat.services.RegistrationService;
 import org.leverx.dealerstat.services.UserService;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,6 +86,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<CommentDto> getApprovedUserComments(Integer id) {
+        userService.get(id);
         return commentsRepository.getAllByTraderIdAndApprovedIsTrue(id)
                 .stream()
                 .map(commentMapper::mapToDto)

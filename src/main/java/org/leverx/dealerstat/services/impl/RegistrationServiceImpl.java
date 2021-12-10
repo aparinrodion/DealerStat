@@ -35,7 +35,6 @@ public class RegistrationServiceImpl implements RegistrationService {
     public UserDto register(UserDto userDto) {
         User user = createUserIfNotExist(userDto);
         user = userMapper.mapToUser(userService.save(userMapper.mapToDto(user)));
-        //user.setId(userService.save(userMapper.mapToDto(user)).getId());
         redisService.save(user.hashCode(), user.getId(), TIME, TIME_UNIT);
         sendConfirmMessage(userMapper.mapToDto(user), user.hashCode());
         return userMapper.mapToDto(user);

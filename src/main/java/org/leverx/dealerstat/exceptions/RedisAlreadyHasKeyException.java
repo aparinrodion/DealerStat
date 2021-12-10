@@ -1,6 +1,6 @@
 package org.leverx.dealerstat.exceptions;
 
-public class RedisAlreadyHasKeyException extends RuntimeException {
+public class RedisAlreadyHasKeyException extends DealerStatException {
     private final static String REDIS_ALREADY_HAS_KEY_PATTERN =
             "Redis already contains key";
 

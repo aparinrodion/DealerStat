@@ -1,6 +1,5 @@
 package org.leverx.dealerstat.repositories;
 
-import org.leverx.dealerstat.dto.CommentDto;
 import org.leverx.dealerstat.model.Comment;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

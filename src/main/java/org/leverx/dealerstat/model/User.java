@@ -52,7 +52,7 @@ public class User {
     private Set<GameObject> gameObjects;
 
     @Column(name = "rating")
-    private double rating = 0;
+    private double rating = 0.0;
 
 
 }

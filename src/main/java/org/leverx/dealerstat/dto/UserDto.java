@@ -5,10 +5,8 @@ import lombok.NoArgsConstructor;
 import org.leverx.dealerstat.model.Comment;
 import org.leverx.dealerstat.model.GameObject;
 import org.leverx.dealerstat.model.Role;
-import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Null;
 import java.util.Date;
 import java.util.Set;
 

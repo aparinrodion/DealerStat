@@ -46,10 +46,10 @@ public class CommentController {
     }
 
     @PutMapping("/comments/{id}")
-    public void updateComment(@PathVariable Integer id,
-                              @RequestBody CommentDto commentDto) {
+    public CommentDto updateComment(@PathVariable Integer id,
+                                    @RequestBody CommentDto commentDto) {
         commentDto.setId(id);
-        commentService.updateComment(commentDto);
+        return commentService.updateComment(commentDto);
     }
 
     @DeleteMapping("/comments/{id}")

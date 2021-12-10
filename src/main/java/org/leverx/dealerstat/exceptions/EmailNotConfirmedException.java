@@ -1,6 +1,6 @@
 package org.leverx.dealerstat.exceptions;
 
-public class EmailNotConfirmedException extends RuntimeException {
+public class EmailNotConfirmedException extends DealerStatException {
     private static final String EMAIL_NOT_CONFIRMED_EXCEPTION_PATTERN =
             "Email %s is not confirmed";
 

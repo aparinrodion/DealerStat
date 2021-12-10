@@ -3,7 +3,6 @@ package org.leverx.dealerstat.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.leverx.dealerstat.dto.UserDto;
-import org.leverx.dealerstat.exceptions.EmailNotConfirmedException;
 import org.leverx.dealerstat.model.Role;
 import org.leverx.dealerstat.services.UserService;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,7 +24,6 @@ public class UserDetailService implements UserDetailsService {
     @Transactional
     @Override
     public UserDetails loadUserByUsername(String email) {
-        //UserDto userDto = getUserDtoIfEmailConfirmedElseThrowException(email);
         UserDto userDto = userService.getByEmail(email);
         return new User(userDto.getEmail(), userDto.getPassword(), mapRolesToAuthorities(userDto.getRoles()));
     }
@@ -35,11 +33,5 @@ public class UserDetailService implements UserDetailsService {
                 .collect(Collectors.toList());
     }
 
-    private UserDto getUserDtoIfEmailConfirmedElseThrowException(String email) {
-        if (!userService.isEmailConfirmedByEmail(email)) {
-            throw new EmailNotConfirmedException(email);
-        } else {
-            return userService.getByEmail(email);
-        }
-    }
+
 }
