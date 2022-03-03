@@ -17,4 +17,6 @@ public interface UserRepository extends CrudRepository<User, Integer> {
     boolean existsById(Integer id);
 
     List<User> getAllByApproved(boolean approved, Pageable pageable);
+
+    List<User> getAllBy();
 }

@@ -14,17 +14,15 @@ import org.leverx.dealerstat.repositories.UserRepository;
 import org.leverx.dealerstat.services.UserService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class UserServiceImpl implements UserService {
     private static final String UNKNOWN_FIRST_NAME = "unknown_first_name";
     private static final String UNKNOWN_LAST_NAME = "unknown_last_name";
@@ -35,9 +33,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getUsers() {
-        List<User> users = new ArrayList<>();
-        userRepository.findAll().forEach(users::add);
-        return users.stream().map(userMapper::mapToDto).collect(Collectors.toList());
+        return userRepository.getAllBy().stream()
+                .map(userMapper::mapToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -130,17 +128,18 @@ public class UserServiceImpl implements UserService {
     }
 
     private void countRating(UserDto userDto) {
-        List<CommentDto> comments = userDto.getComments()
-                .stream()
-                .map(comment -> new CommentMapper().mapToDto(comment))
+        long numberOfComments = userDto.getComments().stream()
+                .map(new CommentMapper()::mapToDto)
                 .filter(CommentDto::isApproved)
-                .collect(Collectors.toList());
-        Double numberOfComments = (double) comments.size();
-        if (numberOfComments != 0.0) {
-            AtomicReference<Double> sum = new AtomicReference<>(0.0);
-            comments.forEach(comment -> sum.updateAndGet(v -> v + comment.getRating()));
-            Double rating = sum.get() / numberOfComments;
-            userDto.setRating(rating);
+                .mapToInt(CommentDto::getRating)
+                .count();
+        double sum = userDto.getComments().stream().
+                map(new CommentMapper()::mapToDto).
+                filter(CommentDto::isApproved)
+                .mapToInt(CommentDto::getRating)
+                .sum();
+        if (numberOfComments != 0) {
+            userDto.setRating(sum / numberOfComments);
         } else {
             userDto.setRating(0.0);
         }

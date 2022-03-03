@@ -21,6 +21,7 @@ import static org.mockito.Mockito.when;
 public class GameServiceUnitTest {
 
     private final GamesRepository gamesRepository = Mockito.mock(GamesRepository.class);
+
     private final GameService gameService = new GameServiceImpl(gamesRepository, new GameMapper());
 
     @Test

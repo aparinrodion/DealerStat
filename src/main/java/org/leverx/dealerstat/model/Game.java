@@ -6,11 +6,13 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+
 @Data
-@Entity
-@Table(name = "games")
 @NoArgsConstructor
 @AllArgsConstructor
+
+@Entity
+@Table(name = "games")
 public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
