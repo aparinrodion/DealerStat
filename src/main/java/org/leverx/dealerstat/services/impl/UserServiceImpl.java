@@ -117,7 +117,6 @@ public class UserServiceImpl implements UserService {
             userDto.setEmail(email);
             return userDto;
         } else throw new UserWithEmailAlreadyExistsException(email);
-
     }
 
     @Override
